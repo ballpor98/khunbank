@@ -1,6 +1,7 @@
 const db = require('./db')
 const IntentApp = require('./intent-app')
 const intentApp = new IntentApp()
+const { getRecommendations } = require('./recommendations')
 
 intentApp.intent(/.*/, (req, res, next) => {
     console.log(`got intent ${req.body.queryResult.intent.displayName}`)
@@ -84,15 +85,23 @@ intentApp.intent('SA Balance', (req, res) => {
     }).catch(err => {
         console.log(err)
         res.json({
-            fulfillmentText: `รวยจังอะ`
+            fulfillmentText: `รวย`
         })
     })
 })
 
 intentApp.intent('Buying', (req, res) => {
-    const affordable = false
     const destination = req.body.queryResult.parameters.thing_to_buy
-    const amount = 3900
+    const amount = req.body.queryResult.parameters.rp
+    const userId = req.body.originalDetectIntentRequest.payload.user.userId
+    var affordable = false
+    db.getSavingAccountBalancesFromUserId(userId).then(results => {
+        r = results.reduce((a, b) => a + b)
+        affordable = amount <= r
+    }).catch(err => {
+        console.log(err)
+        affordable = false
+    })
     if (!affordable) {
         res.json({
             "followupEventInput": {
@@ -106,9 +115,22 @@ intentApp.intent('Buying', (req, res) => {
         })
     } else {
         res.json({
-            fulfillmentText: `จ่ายเงิน ${amount} บาทให้${destination} กรุณากรอก OTP`
+            fulfillmentText: `จ่ายเงิน ${amount} บาทให้ ${destination} กรุณากรอก OTP`
         })
     }
+})
+
+intentApp.intent('Recommendation', (req, res) => {
+    const userId = req.body.originalDetectIntentRequest.payload.user.userId
+    db.getCustomerIdFromUserId(userId)
+        .then(result => getRecommendations(result[0].u_id))
+        .then(recommendations => {
+            fulfillmentText = `รายการสินค้าบริการแนะนำสำหรับคุณ
+${recommendations.map(item => item).slice(0, 2).join('\n')}`
+            res.json({
+                fulfillmentText
+            })
+        })
 })
 
 intentApp.use((req, res) => {
