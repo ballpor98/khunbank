@@ -92,7 +92,7 @@ intentApp.intent('SA Balance', (req, res) => {
 
 intentApp.intent('Buying', (req, res) => {
     const destination = req.body.queryResult.parameters.thing_to_buy
-    const amount = req.body.queryResult.parameters.rp
+    const amount = req.body.queryResult.parameters.price
     const userId = req.body.originalDetectIntentRequest.payload.user.userId
     var affordable = false
     db.getSavingAccountBalancesFromUserId(userId).then(results => {
