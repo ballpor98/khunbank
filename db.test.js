@@ -1,0 +1,7 @@
+const db = require('./db')
+
+;(async () => {
+    await db.init()
+    db.getSavingAccountBalancesFromUserId('ABwppHGnwMEfnVXHMVIg1mWiUIdKwHwboRSeYF-GwnZUIGCtue4Hd3NV9hBL-uYjbL652sX87ZRyqw')
+        .then(console.log)
+})()

@@ -53,8 +53,22 @@ class DB {
                 WHERE user_id = ?
                 LIMIT 1
             ) as E on E.sa_id = sa_transaction.sa_id
-            order by txn_dt desc limit 1;
+            ORDER BY txn_dt desc LIMIT 1;
         `, userId)
+    }
+
+    getSavingAccountBalancesFromUserId(userId) {
+        return this.getUserSavingAccounts(userId).then(results => {
+            return Promise.all(
+                Array.from(results).map(row => {
+                    console.log('row', row.sa_id)
+                    return this.getSavingAccountBalance(row.sa_id).then(results => Promise.resolve({
+                            sa_id: row.sa_id,
+                            balance: results[0].balance
+                        }))
+                })
+            )
+        })
     }
 
     getUserSavingAccounts(userId) {
