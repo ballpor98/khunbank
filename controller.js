@@ -15,80 +15,23 @@ intentApp.intent('Default Welcome Intent', (req, res) => {
         console.log(`got name ${name}`)
         res.json({
             fulfillmentText: `สวัสดี คุณ${name}`,
-            fulfillmentMessages: [
-            {
-                "tableCard": {
-                  "title": "AoG Table Card title",
-                  "subtitle": "AoG Table Card subtitle",
-                  "image": {
-                    "url": "",
-                    "accessibilityText": "Image description for screen readers"
-                  },
-                  "columnProperties": [
-                    {
-                      "header": "Header 1"
-                    },
-                    {
-                      "header": "Header 2",
-                      "horizontalAlignment": "CENTER"
-                    },
-                    {
-                      "header": "Header 3",
-                      "horizontalAlignment": "CENTER"
-                    }
-                  ],
-                  "rows": [
-                    {
-                      "cells": [
-                        {
-                          "text": "Cell A1"
-                        },
-                        {
-                          "text": "Cell A2"
-                        },
-                        {
-                          "text": "Cell A3"
-                        }
-                      ]
-                    },
-                    {
-                      "cells": [
-                        {
-                          "text": "Cell B1"
-                        },
-                        {
-                          "text": "Cell B2"
-                        },
-                        {
-                          "text": "Cell B3"
-                        }
-                      ]
-                    },
-                    {
-                      "cells": [
-                        {
-                          "text": "Cell C1"
-                        },
-                        {
-                          "text": "Cell C2"
-                        },
-                        {
-                          "text": "Cell C3"
-                        }
-                      ]
-                    }
-                  ],
-                  "buttons": [
-                    {
-                      "title": "Button title",
-                      "openUrlAction": {
-                        "url": ""
+
+            "fulfillmentMessages": [
+                {
+                  "card": {
+                    "title": "card title",
+                    "subtitle": "card text",
+                    "imageUri": "https://assistant.google.com/static/images/molecule/Molecule-Formation-stop.png",
+                    "buttons": [
+                      {
+                        "text": "button text",
+                        "postback": "https://assistant.google.com/"
                       }
-                    }
-                  ]
+                    ]
+                  }
                 }
-              }
-        ]
+              ],
+            
         })
     }).catch(err => {
         console.log(err)
