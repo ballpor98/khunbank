@@ -27,11 +27,11 @@ intentApp.intent('Default Welcome Intent', (req, res) => {
 intentApp.intent('Money Transfer', (req, res) => {
     const userId = req.body.originalDetectIntentRequest.payload.user.userId
     console.log(userId)
-    db.getSavingAccountBalanceFromUserId(userId).then(results => {
+    // db.getSavingAccountBalanceFromUserId(userId).then(results => {
         res.json({
             fulfillmentText: req.body.queryResult.fulfillmentText,
         })
-    })
+    // })
 })
 
 intentApp.intent('SA Balance', (req, res) => {
@@ -52,29 +52,15 @@ intentApp.intent('Buying', (req, res) => {
                 "languageCode": "th-TH",
                 "parameters": {
                     "destination": destination,
-                    "amount": 3900
+                    "amount": amount
                 }
             },
         })
     } else {
         res.json({
-            "followupEventInput": {
-                "name": "ask_for_otp",
-                "languageCode": "th-TH",
-                "parameters": {
-                    "destination": destination,
-                    "amount": 3900
-                }
-            },
+            fulfillmentText: `จ่ายเงิน ${amount} บาทให้${destination} กรุณากรอก OTP`
         })
     }
-})
-
-intentApp.intent('Money Not Enough', (req, res) => {
-    const { amount, destination } = req.body.queryResult.parameters
-    res.json({
-        fulfillmentText: `จ่ายเงิน ${amount} บาทให้${destination} กรุณากรอก OTP`
-    })
 })
 
 intentApp.use((req, res) => {
