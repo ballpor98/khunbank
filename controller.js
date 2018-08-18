@@ -14,9 +14,13 @@ intentApp.intent('Default Welcome Intent', (req, res) => {
         const name = results[0].name
         console.log(`got name ${name}`)
         res.json({
-            fulfillmentText: `สวัสดี คุณ${name}`,
+            // fulfillmentText: `สวัสดี คุณ${name}`,
 
             "fulfillmentMessages": [
+                {
+                    "speech": `สวัสดี คุณ${name}`,
+                    type: 0
+                },
                 {
                   "card": {
                     "title": "card title",
