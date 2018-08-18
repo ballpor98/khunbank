@@ -1,21 +1,78 @@
-
 {
-    "fulfillmentText": "response",
-    "fulfillmentMessages":
-      [
-        {"text": {"text":["Hello world"]}},
-        {
-            "card": {
-                "title": "card title",
-                "subtitle": "card text",
-                "imageUri": "https://assistant.google.com/static/images/molecule/Molecule-Formation-stop.png",
-                "buttons": [
-                  {
-                    "text": "button text",
-                    "postback": "https://assistant.google.com/"
+  "fulfillmentText": "response",
+  "fulfillmentMessages": [
+    {
+      "text": {
+        "text": [
+          [
+            {
+              "type": "simple_response",
+              "platform": "google",
+              "textToSpeech": "คุณน่าจะชอบนะ"
+            },
+            {
+              "type": "browse_carousel_card",
+              "platform": "google",
+              "items": [
+                {
+                  "footer": "",
+                  "openUrlAction": {
+                    "url": "https://www.theone.com/living-room-furniture",
+                    "urlTypeHint": "AMP_CONTENT"
+                  },
+                  "title": "Freedom Furniture",
+                  "description": "",
+                  "image": {
+                    "url": "https://www.freedomfurniture.co.nz/images/assetimages/AW18/FNZ1553-AW18-Landing-Furniture-DT-Hor-Banner-880x395-Fabric-Sofa.jpg",
+                    "accessibilityText": "Freedom Furniture"
                   }
-                ]
-              }
-        }
-      ]
+                },
+                {
+                  "footer": "",
+                  "openUrlAction": {
+                    "url": "https://www.theone.com/living-room-furniture",
+                    "urlTypeHint": "AMP_CONTENT"
+                  },
+                  "title": "Furniture on Rent",
+                  "image": {
+                    "url": "https://www.rentomojo.com/public/images/category/package-bg/living-room.jpg",
+                    "accessibilityText": "Furniture on Rent"
+                  }
+                },
+                {
+                  "footer": "",
+                  "openUrlAction": {
+                    "url": "https://www.theone.com/living-room-furniture",
+                    "urlTypeHint": "AMP_CONTENT"
+                  },
+                  "title": "Garden Furniture",
+                  "image": {
+                    "url": "https://kingfisher.scene7.com/is/image/Kingfisher/Category_Image_Garden_Chairs?$PROMO_460_460$",
+                    "accessibilityText": "Garden Furniture"
+                  }
+                },
+                {
+                  "footer": "",
+                  "openUrlAction": {
+                    "url": "https://www.theone.com/living-room-furniture",
+                    "urlTypeHint": "AMP_CONTENT"
+                  },
+                  "title": "Funiture Archive",
+                  "description": "",
+                  "image": {
+                    "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSd0WMXPYXmmSlkyu5AlvGODqrgPZOFIDKnAGlFPaqSOHgW5g-92Q",
+                    "accessibilityText": "Funiture Archive"
+                  }
+                }
+              ]
+            },
+            {
+              "type": 0,
+              "speech": ""
+            }
+          ]
+        ]
+      }
     }
+]
+}
