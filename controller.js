@@ -40,13 +40,13 @@ intentApp.intent('SA Balance', (req, res) => {
 
 intentApp.intent('Buying', (req, res) => {
     res.json({
-        followupEvent: {
-            name: "money_not_enough",
-            data: {
-                destination: "destination",
-                amount: 3900
+        "followupEventInput": {
+            "name": "money_not_enough",
+            "languageCode": "th-TH",
+            "parameters": {
+                "param": "param value"
             }
-        }
+        },
     })
 })
 
