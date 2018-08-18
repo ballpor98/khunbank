@@ -45,14 +45,15 @@ class DB {
 
     getSavingAccountBalanceFromUserId(userId) {
         return this._execQuery(`
-            SELECT crn_bal as balance FROM sa_transaction
-            WHERE sa_id = (
-                SELECT sa_id FROM user_mapper
-                JOIN ip_sa_mapper ON user_mapper.u_id = ip_sa_mapper.u_id
-                WHERE user_id = ?
-            )
-            ORDER BY txn_dt DESC
-            LIMIT 1;
+        SELECT * 
+        FROM sa_transaction
+        JOIN (
+                        SELECT sa_id FROM user_mapper
+                        JOIN ip_sa_mapper ON user_mapper.u_id = ip_sa_mapper.u_id
+                        WHERE user_id = ?
+                        LIMIT 1
+        ) as E on E.sa_id = sa_transaction.sa_id
+        order by eff_dt desc limit 1;
         `, userId)
     }
 
