@@ -8,9 +8,9 @@ intentApp.intent(/.*/, (req, res, next) => {
 })
 
 intentApp.intent('Default Welcome Intent', (req, res) => {
-    console.log(req.body.originalDetectIntentRequest.user.userId)
+    console.log(req.body.originalDetectIntentRequest.payload.user)
     // const name = 'ประยุทธ'
-    db.getNameFromUserId(req.body.originalDetectIntentRequest.user.userId).then(results => {
+    db.getNameFromUserId(req.body.originalDetectIntentRequest.payload.user.userId).then(results => {
         const name = results[0].name
         res.json({
             fulfillmentText: `สวัสดี คุณ${name}`
@@ -38,7 +38,6 @@ intentApp.intent('SA Balance', (req, res) => {
 
 intentApp.intent('Buying', (req, res) => {
     res.json({
-        "fulfillmentText": "ได้เลย เดี๋ยวซื้อให้นะ",
         "followupEvent": {
             "name": "money_not_enough",
             "data": {
