@@ -36,10 +36,10 @@ class DB {
             })
         })
     }
-    
+
     getSavingAccountBalanceFromUserId(userId) {
         return this._execQuery(`
-            SELECT crn_bal as balance
+            SELECT crn_bal AS balance
             FROM sa_transaction
             JOIN (
                 SELECT sa_id FROM user_mapper
