@@ -128,12 +128,8 @@ ${recommendations.slice(0, 2).join('\n')}`
             res.json({
                 fulfillmentText,
                 "followupEventInput": {
-                    "name": "money_not_enough",
+                    "name": "recommend_picture",
                     "languageCode": "th-TH",
-                    "parameters": {
-                        "destination": destination,
-                        "amount": amount
-                    }
                 },
             })
         })
