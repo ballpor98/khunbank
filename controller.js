@@ -15,7 +15,8 @@ intentApp.intent('Default Welcome Intent', (req, res) => {
         console.log(`got name ${name}`)
         res.json({
             fulfillmentText: `สวัสดี คุณ${name}`,
-            fulfillmentMessages: {
+            fulfillmentMessages: [
+            {
                 "tableCard": {
                   "title": "AoG Table Card title",
                   "subtitle": "AoG Table Card subtitle",
@@ -88,6 +89,7 @@ intentApp.intent('Default Welcome Intent', (req, res) => {
                   ]
                 }
               }
+        ]
         })
     }).catch(err => {
         console.log(err)
