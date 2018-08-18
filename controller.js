@@ -43,7 +43,7 @@ intentApp.intent('SA Balance', (req, res) => {
         //     fulfillmentText: `เงินคงเหลือในบัญชี ${amount} บาท`
         // })
         res.json({
-            fulfillmentText: results.map(result => `บัญชี ${result.sa_id} ยอดเงินคงเหลือ ${result.balance} บาท`).join('\n')
+            fulfillmentText: results.slice(0, 1).map(result => `บัญชี ${result.sa_id} ยอดเงินคงเหลือ ${result.balance} บาท`).join('\n')
         })
     }).catch(err => {
         console.log(err)
