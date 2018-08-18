@@ -60,5 +60,4 @@ module.exports = (req, res) => {
     const body = req.body
     console.log(body)
     intentApp.handler(req, res)
-    res.status(200).end()
 }
