@@ -111,11 +111,26 @@ class DB {
             where month(eff_dt) = 12 and year(eff_dt) = 2017 
             group by cct.card_no_encpt
             ) as d on d.card_no_encpt = cci.card_no_encpt
+            order by card asc
         `, u_id)
     }
 
     getUserRemainingCredits(userId) {
         return this.getUidFromUserId(userId).then(result => this.getRemainingCredits(result[0].u_id))
+    }
+
+    getCardLimitsFromUid(u_id) {
+        return this._execQuery(`
+            SELECT card_no_encpt AS card, cr_lmt_amt AS card_limit 
+            FROM cc_information cci 
+            JOIN ip_cc_mapper ccm ON cci.main_cc_cst_no = ccm.cc_cst_no 
+            WHERE ccm.u_id = ?
+            ORDER BY card ASC
+        `, u_id)
+    }
+
+    getUserCardLimits(userId) {
+        return this.getUidFromUserId(userId).then(results => this.getCardLimitsFromUid(results[0].u_id))
     }
 }
 
