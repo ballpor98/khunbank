@@ -42,12 +42,11 @@ intentApp.intent('SA Balance', (req, res) => {
 })
 
 intentApp.intent('Buying', (req, res) => {
-    const affordable = true
-    const destination = req.body.queryResult.outputContexts[0].parameters.thing_to_buy
+    const affordable = false
+    const destination = req.body.queryResult.parameters.thing_to_buy
     const amount = 3900
-    if (affordable) {
+    if (!affordable) {
         res.json({
-            "fulfillmentText": `ได้เลย ราคา ${amount} บาทนะ แต่เงินในบัญชีของคุณไม่เพียงพอ ต้องการใช้บัตรเครดิตไหม`,
             "followupEventInput": {
                 "name": "money_not_enough",
                 "languageCode": "th-TH",
@@ -69,6 +68,13 @@ intentApp.intent('Buying', (req, res) => {
             },
         })
     }
+})
+
+intentApp.intent('Money Not Enough', (req, res) => {
+    const { amount, destination } = req.body.queryResult.parameters
+    res.json({
+        fulfillmentText: `จ่ายเงิน ${amount} บาทให้${destination} กรุณากรอก OTP`
+    })
 })
 
 intentApp.use((req, res) => {
