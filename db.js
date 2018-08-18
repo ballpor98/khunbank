@@ -56,6 +56,14 @@ class DB {
         `, userId)
     }
 
+    getUserSavingAccounts(userId) {
+        return this._execQuery(`
+            SELECT sa_id FROM user_mapper
+            JOIN ip_sa_mapper ON user_mapper.u_id = ip_sa_mapper.u_id
+            WHERE user_id = ?;
+        `, userId)
+    }
+
     getSavingAccountBalance(savingAccountId) {
         return this._execQuery(`
             SELECT crn_bal as balance FROM sa_transaction

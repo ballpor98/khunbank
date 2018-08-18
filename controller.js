@@ -31,13 +31,22 @@ intentApp.intent('Money Transfer', (req, res) => {
         res.json({
             fulfillmentText: req.body.queryResult.fulfillmentText,
         })
-    // })
+    // })`
 })
 
 intentApp.intent('SA Balance', (req, res) => {
     const amount = 1
-    res.json({
-        fulfillmentText: `เงินคงเหลือในบัญชี ${amount} บาท`
+    const userId = req.body.originalDetectIntentRequest.payload.user.userId
+    db.getSavingAccountBalanceFromUserId(userId).then(results => {
+        const amount = results[0].balance
+        res.json({
+            fulfillmentText: `เงินคงเหลือในบัญชี ${amount} บาท`
+        })
+    }).catch(err => {
+        console.log(err)
+        res.json({
+            fulfillmentText: `รวยจังอะ`
+        })
     })
 })
 
