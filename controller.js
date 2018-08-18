@@ -10,6 +10,26 @@ intentApp.intent('testIntent', (req, res) => {
     res.send('got testIntent')
 })
 
+intentApp.intent('SA Balance', (req, res) => {
+    const amount = 10000
+    res.json({
+        fulfillmentText: `เงินคงเหลือในบัญชี ${amount} บาท`
+    })
+})
+
+intentApp.intent('buying', (req, res) => {
+    res.json({
+        "followupEvent": {
+            "name": "money_not_enough",
+            "data": {
+                "destination": "destination",
+                "amount": 200000
+      }
+   }
+                
+    })
+})
+
 intentApp.use((req, res) => {
     res.json({
         fulfillmentText: 'test fulfillmentText'
