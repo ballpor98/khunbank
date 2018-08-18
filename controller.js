@@ -2,7 +2,7 @@ const IntentApp = require('./intent-app')
 const intentApp = new IntentApp()
 
 intentApp.intent(/.*/, (req, res, next) => {
-    console.log(`got intent ${req.body.intent}`)
+    console.log(`got intent ${req.body.queryResult.intent.displayName}`)
     next(res)
 })
 
