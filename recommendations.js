@@ -9,7 +9,7 @@ const createUrl = (customerId) => `${baseUrl}/${customerId}`
 const getRecommendations = async (customerId) => {
     const req = await (axios.get(createUrl(customerId)))
     const res = req.data
-    const recommendations = Object.keys(res).map(key => resJson[key])
+    const recommendations = Object.keys(res).map(key => res[key])
     return recommendations
 }
 
