@@ -8,10 +8,12 @@ intentApp.intent(/.*/, (req, res, next) => {
 })
 
 intentApp.intent('Default Welcome Intent', (req, res) => {
-    console.log(req.body.originalDetectIntentRequest.payload.user.userId)
+    const userId = req.body.originalDetectIntentRequest.payload.user.userId
+    console.log(userId)
     // const name = 'ประยุทธ'
-    db.getNameFromUserId(req.body.originalDetectIntentRequest.payload.user.userId).then(results => {
+    db.getNameFromUserId(userId).then(results => {
         const name = results[0].name
+        console.log(`got name ${name}`)
         res.json({
             fulfillmentText: `สวัสดี คุณ${name}`
         })
