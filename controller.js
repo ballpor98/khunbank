@@ -14,28 +14,7 @@ intentApp.intent('Default Welcome Intent', (req, res) => {
         const name = results[0].name
         console.log(`got name ${name}`)
         res.json({
-            // fulfillmentText: `สวัสดี คุณ${name}`,
-
-            "fulfillmentMessages": [
-                {
-                    "speech": `สวัสดี คุณ${name}`,
-                    type: 0
-                },
-                {
-                  "card": {
-                    "title": "card title",
-                    "subtitle": "card text",
-                    "imageUri": "https://assistant.google.com/static/images/molecule/Molecule-Formation-stop.png",
-                    "buttons": [
-                      {
-                        "text": "button text",
-                        "postback": "https://assistant.google.com/"
-                      }
-                    ]
-                  }
-                }
-              ],
-            
+            fulfillmentText: `สวัสดี คุณ${name}`,
         })
     }).catch(err => {
         console.log(err)
@@ -58,10 +37,13 @@ intentApp.intent('Money Transfer', (req, res) => {
 intentApp.intent('SA Balance', (req, res) => {
     const amount = 1
     const userId = req.body.originalDetectIntentRequest.payload.user.userId
-    db.getSavingAccountBalanceFromUserId(userId).then(results => {
-        const amount = results[0].balance
+    db.getSavingAccountBalancesFromUserId(userId).then(results => {
+        // const amount = results[0].balance
+        // res.json({
+        //     fulfillmentText: `เงินคงเหลือในบัญชี ${amount} บาท`
+        // })
         res.json({
-            fulfillmentText: `เงินคงเหลือในบัญชี ${amount} บาท`
+            fulfillmentText: results.map(result => `บัญชี ${result.sa_id} ยอดเงินคงเหลือ ${result.balance} บาท`).join('\n')
         })
     }).catch(err => {
         console.log(err)
