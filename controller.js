@@ -119,9 +119,10 @@ intentApp.intent('Buying', (req, res) => {
 
 intentApp.intent('Recommendation', (req, res) => {
     const userId = req.body.originalDetectIntentRequest.payload.user.userId
-    db.getCustomerIdFromUserId(userId)
-        .then(result => getRecommendations(result[0].u_id))
+    db.getUidFromUserId(userId)
+        .then(results => getRecommendations(results[0].u_id))
         .then(recommendations => {
+            console.log('recommendations', recommendations)
             fulfillmentText = `รายการสินค้าบริการแนะนำสำหรับคุณ
 ${recommendations.slice(0, 2).join('\n')}`
             res.json({

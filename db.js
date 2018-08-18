@@ -36,14 +36,7 @@ class DB {
             })
         })
     }
-
-    getCustomerIdFromUserId(userId) {
-        return this._execQuery(`
-            SELECT u_id as user_id FROM user_mapper
-            WHERE user_id = ?;
-        `, userId)
-    }
-
+    
     getSavingAccountBalanceFromUserId(userId) {
         return this._execQuery(`
             SELECT crn_bal as balance
@@ -98,8 +91,8 @@ class DB {
 
     getUidFromUserId(userId) {
         return this._execQuery(`
-        select u_id from user_mapper
-        where user_id = ?;
+            SELECT u_id FROM user_mapper
+            WHERE user_id = ?;
         `, userId)
     }
 
