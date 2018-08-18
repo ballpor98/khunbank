@@ -11,7 +11,7 @@ intentApp.intent('Check Credit Card Limit', (req, res) => {
     const userId = req.body.originalDetectIntentRequest.payload.user.userId
     db.getUserCardLimits(userId).then(results => {
         const fulfillmentText = results.map((card, index) => {
-            return `บัตรใบที่ ${index+1} วงเงิน ${card.card_limit} บาท`
+            return `บัตรใบที่ ${index+1} วงเงินสูงสุด ${card.card_limit} บาท`
         }).slice(0, 2).join('\n')
         res.json({
             fulfillmentText
@@ -24,6 +24,18 @@ intentApp.intent('Credit Card Utilization', (req, res) => {
     db.getUserRemainingCredits(userId).then(results => {
         const fulfillmentText = results.map((card, index) => {
             return `บัตรใบที่ ${index+1} วงเงินเหลือ ${card.remaining_cr} บาท`
+        }).slice(0, 2).join('\n')
+        res.json({
+            fulfillmentText
+        })
+    })
+})
+
+intentApp.intent('Bill Payment', (req, res) => {
+    const userId = req.body.originalDetectIntentRequest.payload.user.userId
+    db.getUserMonthlyReport(userId).then(results => {
+        const fulfillmentText = results.map((card, index) => {
+            return `บัตรใบที่ ${index+1} ยอดค้างชำระ ${card.amt_used} จ่ายเงินวันที่ ${card.bill_cyc}`
         }).slice(0, 2).join('\n')
         res.json({
             fulfillmentText

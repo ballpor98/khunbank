@@ -104,15 +104,30 @@ class DB {
 
     getRemainingCredits(u_id) {
         return this._execQuery(`
-            select cci.card_no_encpt as card, (cr_lmt_amt - amt_used) as remaining_cr from cc_information cci join (
-            select cct.card_no_encpt, sum(txn_amt) as amt_used from cc_transaction cct
-            join (select * from cc_information cci join ip_cc_mapper ccm on cci.main_cc_cst_no = ccm.cc_cst_no where ccm.u_id = ?) as E
-            on cct.card_no_encpt = E.card_no_encpt
-            where month(eff_dt) = 12 and year(eff_dt) = 2017 
-            group by cct.card_no_encpt
-            ) as d on d.card_no_encpt = cci.card_no_encpt
-            order by card asc
+            SELECT cci.card_no_encpt AS card, (cr_lmt_amt - amt_used) AS remaining_cr from cc_information cci join (
+                SELECT cct.card_no_encpt, SUM(txn_amt) AS amt_used FROM cc_transaction cct
+                JOIN (
+                    SELECT * from cc_information cci JOIN ip_cc_mapper ccm ON cci.main_cc_cst_no = ccm.cc_cst_no WHERE ccm.u_id = ?
+                ) AS E
+                ON cct.card_no_encpt = E.card_no_encpt
+                WHERE month(eff_dt) = 12 AND year(eff_dt) = 2017 
+                GROUP BY cct.card_no_encpt
+            ) AS D on D.card_no_encpt = cci.card_no_encpt
+            ORDER BY card ASC
         `, u_id)
+    }
+
+    getMonthlyReportFromUid(u_id) {
+        return this._execQuery(`
+            SELECT cci.card_no_encpt AS card,  amt_used, bill_cyc FROM cc_information cci JOIN (
+            SELECT cct.card_no_encpt, SUM(txn_amt) AS amt_used FROM cc_transaction cct
+            JOIN (SELECT * FROM cc_information cci JOIN ip_cc_mapper ccm ON cci.main_cc_cst_no = ccm.cc_cst_no WHERE ccm.u_id = 'cst_id012728') AS E
+                ON cct.card_no_encpt = E.card_no_encpt
+                WHERE MONTH(eff_dt) = 12 AND YEAR(eff_dt) = 2017 
+                GROUP BY cct.card_no_encpt
+            ) AS d ON d.card_no_encpt = cci.card_no_encpt
+            ORDER BY card ASC
+        `)
     }
 
     getUserRemainingCredits(userId) {
@@ -129,8 +144,26 @@ class DB {
         `, u_id)
     }
 
+    getUserMonthlyReport(userId) {
+        return this.getUidFromUserId(userId).then(result => this.getMonthlyReportFromUid(results[0].u_id))
+    }
+
+    getBillCyclesFromUid(u_id) {
+        return this._execQuery(`
+            SELECT card_no_encpt AS card, bill_cyc AS bill_cycle 
+            FROM cc_information cci 
+            JOIN ip_cc_mapper ccm ON cci.main_cc_cst_no = ccm.cc_cst_no 
+            WHERE ccm.u_id = ?
+            ORDER BY card ASC
+        `, u_id)
+    }
+
     getUserCardLimits(userId) {
         return this.getUidFromUserId(userId).then(results => this.getCardLimitsFromUid(results[0].u_id))
+    }
+
+    getUserCardBillCycles(userId) {
+        return this.getUidFromUserId(userId).then(results => this.getBillCyclesFromUid(results[0].u_id))
     }
 }
 

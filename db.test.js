@@ -10,4 +10,7 @@ const db = require('./db')
     
     db.getUserCardLimits('ABwppHGnwMEfnVXHMVIg1mWiUIdKwHwboRSeYF-GwnZUIGCtue4Hd3NV9hBL-uYjbL652sX87ZRyqw')
         .then(console.log)
+    
+    db.getUserCardBillCycles('ABwppHGnwMEfnVXHMVIg1mWiUIdKwHwboRSeYF-GwnZUIGCtue4Hd3NV9hBL-uYjbL652sX87ZRyqw')
+        .then(console.log)
 })()
