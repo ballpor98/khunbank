@@ -48,8 +48,7 @@ intentApp.intent('Default Welcome Intent', (req, res) => {
                         },
                         {
                           "text": "Cell A3"
-                        },
-                        "dividerAfter": true
+                        }
                       ]
                     },
                     {
