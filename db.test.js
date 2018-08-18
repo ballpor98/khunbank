@@ -1,7 +1,8 @@
 const db = require('./db')
 const axios = require('axios')
+const { getRecommendations } = require('./recommendations')
 
-axios.get('http://httpbin.org/deny').then(res => console.log(res.data))
+getRecommendations('cst_id012728').then(res => console.log('recommends', res))
 
 ;(async () => {
     await db.init()

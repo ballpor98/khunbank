@@ -123,7 +123,7 @@ intentApp.intent('Recommendation', (req, res) => {
         .then(result => getRecommendations(result[0].u_id))
         .then(recommendations => {
             fulfillmentText = `รายการสินค้าบริการแนะนำสำหรับคุณ
-${recommendations.map(item => item).slice(0, 2).join('\n')}`
+${recommendations.slice(0, 2).join('\n')}`
             res.json({
                 fulfillmentText
             })
