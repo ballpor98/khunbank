@@ -6,6 +6,13 @@ intentApp.intent(/.*/, (req, res, next) => {
     next(res)
 })
 
+intentApp.intent('Default Welcome Intent', (req, res) => {
+    const name = 'ประยุทธ'
+    res.json({
+        fulfillmentText: `สวัสดี คุณ${name}`
+    })
+})
+
 intentApp.intent('testIntent', (req, res) => {
     res.send('got testIntent')
 })
@@ -17,7 +24,7 @@ intentApp.intent('SA Balance', (req, res) => {
     })
 })
 
-intentApp.intent('buying', (req, res) => {
+intentApp.intent('Buying', (req, res) => {
     res.json({
         "fulfillmentText": "ได้เลย ราคา 3900 บาทนะ แต่เงินในบัญชีของคุณไม่เพียงพอ ต้องการใช้บัตรเครดิตไหม",
         "followupEvent": {
