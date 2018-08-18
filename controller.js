@@ -10,6 +10,12 @@ intentApp.intent('testIntent', (req, res) => {
     res.send('got testIntent')
 })
 
+intentApp.use((req, res) => {
+    res.json({
+        fulfillmentText: 'test fulfillmentText'
+    })
+})
+
 module.exports = (req, res) => {
     const body = req.body
     console.log(body)

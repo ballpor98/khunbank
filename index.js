@@ -8,7 +8,7 @@ const app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.post('/api', controller)
+app.post('/', controller)
 app.get('/gsab', (req, res) => {
     console.log(req.query.id)
     db.getSavingAccountBalance(req.query.id).then(results => {
