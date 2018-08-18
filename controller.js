@@ -126,11 +126,7 @@ intentApp.intent('Recommendation', (req, res) => {
             fulfillmentText = `รายการสินค้าบริการแนะนำสำหรับคุณ
 ${recommendations.slice(0, 2).join('\n')}`
             res.json({
-                fulfillmentText,
-                "followupEventInput": {
-                    "name": "recommend_picture",
-                    "languageCode": "th-TH",
-                },
+                fulfillmentText
             })
         })
 })
