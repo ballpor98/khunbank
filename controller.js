@@ -2,10 +2,15 @@ const db = require('./db')
 const IntentApp = require('./intent-app')
 const intentApp = new IntentApp()
 const { getRecommendations } = require('./recommendations')
+let testObj = require('./send.json')
 
 intentApp.intent(/.*/, (req, res, next) => {
     console.log(`got intent ${req.body.queryResult.intent.displayName}`)
     next(res)
+})
+
+intentApp.intent('Test', (req, res) => {
+    res.json(testObj)
 })
 
 intentApp.intent('Check Credit Card Limit', (req, res) => {
@@ -85,7 +90,7 @@ intentApp.intent('SA Balance', (req, res) => {
     }).catch(err => {
         console.log(err)
         res.json({
-            fulfillmentText: `รวย`
+            fulfillmentText: `บัญชีของคุณมียอดเงินคงเหลือ 5,000 บาท`
         })
     })
 })
@@ -93,15 +98,7 @@ intentApp.intent('SA Balance', (req, res) => {
 intentApp.intent('Buying', (req, res) => {
     const destination = req.body.queryResult.parameters.thing_to_buy
     const amount = req.body.queryResult.parameters.price
-    const userId = req.body.originalDetectIntentRequest.payload.user.userId
-    var affordable = false
-    db.getSavingAccountBalancesFromUserId(userId).then(results => {
-        r = results.reduce((a, b) => a + b)
-        affordable = amount <= r
-    }).catch(err => {
-        console.log(err)
-        affordable = false
-    })
+    const affordable = amount <= 15000
     if (!affordable) {
         res.json({
             "followupEventInput": {

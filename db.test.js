@@ -1,4 +1,7 @@
 const db = require('./db')
+const axios = require('axios')
+
+axios.get('http://httpbin.org/deny').then(res => console.log(res.data))
 
 ;(async () => {
     await db.init()
