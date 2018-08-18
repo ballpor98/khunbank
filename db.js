@@ -36,6 +36,26 @@ class DB {
         })
     }
 
+    getCustomerIdFromUserId(userId) {
+        return this._execQuery(`
+            SELECT u_id as user_id FROM user_mapper
+            WHERE user_id = ?;
+        `, userId)
+    }
+
+    getSavingAccountBalanceFromUserId(userId) {
+        return this._execQuery(`
+            SELECT crn_bal as balance FROM sa_transaction
+            WHERE sa_id = (
+                SELECT sa_id FROM user_mapper
+                JOIN ip_sa_mapper ON user_mapper.u_id = ip_sa_mapper.u_id
+                WHERE user_id = ?
+            )
+            ORDER BY txn_dt DESC
+            LIMIT 1;
+        `, userId)
+    }
+
     getSavingAccountBalance(savingAccountId) {
         return this._execQuery(`
             SELECT crn_bal as balance FROM sa_transaction

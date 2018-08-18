@@ -10,7 +10,6 @@ intentApp.intent(/.*/, (req, res, next) => {
 intentApp.intent('Default Welcome Intent', (req, res) => {
     const userId = req.body.originalDetectIntentRequest.payload.user.userId
     console.log(userId)
-    // const name = 'ประยุทธ'
     db.getNameFromUserId(userId).then(results => {
         const name = results[0].name
         console.log(`got name ${name}`)
@@ -26,28 +25,50 @@ intentApp.intent('Default Welcome Intent', (req, res) => {
 })
 
 intentApp.intent('Money Transfer', (req, res) => {
-    res.json({
-        fulfillmentText: req.body.queryResult.fulfillmentText,
+    const userId = req.body.originalDetectIntentRequest.payload.user.userId
+    console.log(userId)
+    db.getSavingAccountBalanceFromUserId(userId).then(results => {
+        res.json({
+            fulfillmentText: req.body.queryResult.fulfillmentText,
+        })
     })
 })
 
 intentApp.intent('SA Balance', (req, res) => {
-    const amount = 10000
+    const amount = 1
     res.json({
         fulfillmentText: `เงินคงเหลือในบัญชี ${amount} บาท`
     })
 })
 
 intentApp.intent('Buying', (req, res) => {
-    res.json({
-        "followupEventInput": {
-            "name": "money_not_enough",
-            "languageCode": "th-TH",
-            "parameters": {
-                "param": "param value"
-            }
-        },
-    })
+    const affordable = true
+    const destination = req.body.queryResult.outputContexts[0].parameters.thing_to_buy
+    const amount = 3900
+    if (affordable) {
+        res.json({
+            "fulfillmentText": `ได้เลย ราคา ${amount} บาทนะ แต่เงินในบัญชีของคุณไม่เพียงพอ ต้องการใช้บัตรเครดิตไหม`,
+            "followupEventInput": {
+                "name": "money_not_enough",
+                "languageCode": "th-TH",
+                "parameters": {
+                    "destination": destination,
+                    "amount": 3900
+                }
+            },
+        })
+    } else {
+        res.json({
+            "followupEventInput": {
+                "name": "ask_for_otp",
+                "languageCode": "th-TH",
+                "parameters": {
+                    "destination": destination,
+                    "amount": 3900
+                }
+            },
+        })
+    }
 })
 
 intentApp.use((req, res) => {
