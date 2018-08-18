@@ -19,14 +19,14 @@ intentApp.intent('SA Balance', (req, res) => {
 
 intentApp.intent('buying', (req, res) => {
     res.json({
+        "fulfillmentText": "ได้เลย ราคา 3900 บาทนะ แต่เงินในบัญชีของคุณไม่เพียงพอ ต้องการใช้บัตรเครดิตไหม",
         "followupEvent": {
             "name": "money_not_enough",
             "data": {
                 "destination": "destination",
-                "amount": 200000
-      }
-   }
-                
+                "amount": 3900
+            }
+        }
     })
 })
 
