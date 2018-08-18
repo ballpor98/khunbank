@@ -7,6 +7,7 @@ intentApp.intent(/.*/, (req, res, next) => {
 })
 
 intentApp.intent('Default Welcome Intent', (req, res) => {
+    console.log(req.body.originalDetectIntentRequest)
     const name = 'ประยุทธ'
     res.json({
         fulfillmentText: `สวัสดี คุณ${name}`
