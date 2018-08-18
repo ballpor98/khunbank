@@ -4,4 +4,7 @@ const db = require('./db')
     await db.init()
     db.getSavingAccountBalancesFromUserId('ABwppHGnwMEfnVXHMVIg1mWiUIdKwHwboRSeYF-GwnZUIGCtue4Hd3NV9hBL-uYjbL652sX87ZRyqw')
         .then(console.log)
+    
+    db.getUserRemainingCredits('ABwppHGnwMEfnVXHMVIg1mWiUIdKwHwboRSeYF-GwnZUIGCtue4Hd3NV9hBL-uYjbL652sX87ZRyqw')
+        .then(console.log)
 })()

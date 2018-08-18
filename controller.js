@@ -7,6 +7,18 @@ intentApp.intent(/.*/, (req, res, next) => {
     next(res)
 })
 
+intentApp.intent('Credit Card Utilization', (req, res) => {
+    const userId = req.body.originalDetectIntentRequest.payload.user.userId
+    db.getUserRemainingCredits(userId).then(results => {
+        const fulfillmentText = results.map((card, index) => {
+            return `บัตรใบที่ ${index} วงเงินเหลือ ${card.remaining_cr} บาท`
+        }).slice(0, 2).join('\n')
+        res.json({
+            fulfillmentText
+        })
+    })
+})
+
 intentApp.intent('Default Welcome Intent', (req, res) => {
     const userId = req.body.originalDetectIntentRequest.payload.user.userId
     console.log(userId)
@@ -43,7 +55,7 @@ intentApp.intent('SA Balance', (req, res) => {
         //     fulfillmentText: `เงินคงเหลือในบัญชี ${amount} บาท`
         // })
         res.json({
-            fulfillmentText: results.slice(0, 1).map(result => `บัญชี ${result.sa_id} ยอดเงินคงเหลือ ${result.balance} บาท`).join('\n')
+            fulfillmentText: results.slice(0, 2).map(result => `บัญชี ${result.sa_id.substr(5)} ยอดเงินคงเหลือ ${result.balance} บาท`).join('\n')
         })
     }).catch(err => {
         console.log(err)

@@ -94,6 +94,29 @@ class DB {
             WHERE user_id = ?;
         `, userId)
     }
+
+    getUidFromUserId(userId) {
+        return this._execQuery(`
+        select u_id from user_mapper
+        where user_id = ?;
+        `, userId)
+    }
+
+    getRemainingCredits(u_id) {
+        return this._execQuery(`
+            select cci.card_no_encpt as card, (cr_lmt_amt - amt_used) as remaining_cr from cc_information cci join (
+            select cct.card_no_encpt, sum(txn_amt) as amt_used from cc_transaction cct
+            join (select * from cc_information cci join ip_cc_mapper ccm on cci.main_cc_cst_no = ccm.cc_cst_no where ccm.u_id = ?) as E
+            on cct.card_no_encpt = E.card_no_encpt
+            where month(eff_dt) = 12 and year(eff_dt) = 2017 
+            group by cct.card_no_encpt
+            ) as d on d.card_no_encpt = cci.card_no_encpt
+        `, u_id)
+    }
+
+    getUserRemainingCredits(userId) {
+        return this.getUidFromUserId(userId).then(result => this.getRemainingCredits(result[0].u_id))
+    }
 }
 
 module.exports = new DB(config.db)
