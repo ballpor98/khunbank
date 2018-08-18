@@ -44,6 +44,13 @@ class DB {
             LIMIT 1;
         `, savingAccountId)
     }
+
+    getNameFromUserId(userId) {
+        return this._execQuery(`
+            SELECT debug_name AS name FROM user_mapper
+            WHERE user_id = ?;
+        `, userId)
+    }
 }
 
 module.exports = new DB(config.db)

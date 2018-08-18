@@ -1,3 +1,4 @@
+const db = require('./db')
 const IntentApp = require('./intent-app')
 const intentApp = new IntentApp()
 
@@ -7,15 +8,25 @@ intentApp.intent(/.*/, (req, res, next) => {
 })
 
 intentApp.intent('Default Welcome Intent', (req, res) => {
-    console.log(req.body.originalDetectIntentRequest)
-    const name = 'ประยุทธ'
-    res.json({
-        fulfillmentText: `สวัสดี คุณ${name}`
+    console.log(req.body.originalDetectIntentRequest.user.userId)
+    // const name = 'ประยุทธ'
+    db.getNameFromUserId(req.body.originalDetectIntentRequest.user.userId).then(results => {
+        const name = results[0].name
+        res.json({
+            fulfillmentText: `สวัสดี คุณ${name}`
+        })
+    }).catch(err => {
+        console.log(err)
+        res.json({
+            fulfillmentText: `สวัสดี คุณประยุทธ`
+        })
     })
 })
 
-intentApp.intent('testIntent', (req, res) => {
-    res.send('got testIntent')
+intentApp.intent('Money Transfer', (req, res) => {
+    res.json({
+        fulfillmentText: req.body.queryResult.fulfillmentText,
+    })
 })
 
 intentApp.intent('SA Balance', (req, res) => {
@@ -27,7 +38,7 @@ intentApp.intent('SA Balance', (req, res) => {
 
 intentApp.intent('Buying', (req, res) => {
     res.json({
-        "fulfillmentText": "ได้เลย ราคา 3900 บาทนะ แต่เงินในบัญชีของคุณไม่เพียงพอ ต้องการใช้บัตรเครดิตไหม",
+        "fulfillmentText": "ได้เลย เดี๋ยวซื้อให้นะ",
         "followupEvent": {
             "name": "money_not_enough",
             "data": {
@@ -40,7 +51,7 @@ intentApp.intent('Buying', (req, res) => {
 
 intentApp.use((req, res) => {
     res.json({
-        fulfillmentText: 'test fulfillmentText'
+        fulfillmentText: 'เย้ สนุกจังเลย'
     })
 })
 
